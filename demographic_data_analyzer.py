@@ -1,13 +1,16 @@
 import pandas as pd
 
-
 def calculate_demographic_data(print_data=True):
+    
     # Read data from file
     df = pd.read_csv('adult.data.csv')
+    
     # How many of each race are represented in this dataset? This should be a Pandas series with race names as the index labels.
     race_count = df['race'].value_counts()
+    
     # What is the average age of men?
     average_age_men = df[df['sex'] == 'Male']['age'].mean().round(1)
+    
     # What is the percentage of people who have a Bachelor's degree?
     bachelors = df[df['education'] == 'Bachelors'].size
     total_num = df.size
@@ -18,10 +21,10 @@ def calculate_demographic_data(print_data=True):
     # with and without `Bachelors`, `Masters`, or `Doctorate`
     higher_education = df[df['education'].isin(["Bachelors","Masters","Doctorate"])]
     lower_education = df[~df['education'].isin(["Bachelors","Masters","Doctorate"])]
+    
     # percentage with salary >50K
     higher_education_num = higher_education[higher_education.salary == ">50K"].size
     lower_education_num = lower_education[lower_education.salary == ">50K"].size
-
     higher_education_rich = round(higher_education_num/higher_education.size * 100,1)
     lower_education_rich = round(lower_education_num/lower_education.size * 100,1)
 
@@ -31,13 +34,11 @@ def calculate_demographic_data(print_data=True):
     # What percentage of the people who work the minimum number of hours per week have a salary of >50K?
     num_min_workers = df[df['hours-per-week'] == min_work_hours]
     rich_min_workers = num_min_workers[num_min_workers.salary == ">50K"].size
-
     rich_percentage = round(rich_min_workers/num_min_workers.size * 100,1)
 
     # What country has the highest percentage of people that earn >50K?
     country_count = df['native-country'].value_counts()
-    rich_country_count = df[df['salary'] == ">50K"]['native-country'].value_counts()
-    
+    rich_country_count = df[df['salary'] == ">50K"]['native-country'].value_counts()    
     highest_earning_country = round(rich_country_count/country_count * 100, 1).idxmax()
     highest_earning_country_percentage = round(rich_country_count/country_count * 100, 1).max()
 
@@ -47,7 +48,6 @@ def calculate_demographic_data(print_data=True):
     top_IN_occupation = india_occupation.idxmax()
 
     # DO NOT MODIFY BELOW THIS LINE
-
     if print_data:
         print("Number of each race:\n", race_count) 
         print("Average age of men:", average_age_men)
